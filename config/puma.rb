@@ -7,9 +7,9 @@
 threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }.to_i
 threads threads_count, threads_count
 
-# Specifies the `port` that Puma will listen on to receive requests, default is 3000.
+# Specifies the `port` that Puma will listen on to receive requests, default is 3000. I set it to 2999 so I can use 3000 for the React front-end
 #
-port        ENV.fetch("PORT") { 3000 }
+port        ENV.fetch("PORT") { 2999 }
 
 # Specifies the `environment` that Puma will run in.
 #
