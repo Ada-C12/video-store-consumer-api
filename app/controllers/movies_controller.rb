@@ -15,7 +15,7 @@ class MoviesController < ApplicationController
     render(
       status: :ok,
       json: @movie.as_json(
-        only: [:title, :overview, :release_date, :inventory],
+        only: [:title, :overview, :release_date, :inventory, :image_url],
         methods: [:available_inventory]
         )
       )
