@@ -75,4 +75,20 @@ class MoviesControllerTest < ActionDispatch::IntegrationTest
 
     end
   end
+
+  describe 'create' do
+    it 'creates a movie' do
+      count = Movie.count
+      params = {
+        title: "test", 
+        overview: "x", 
+        release_date: "12-12-19", 
+        inventory: 2, 
+        image_url: "something"
+      }
+      post movies_url(),params: params
+      
+      expect(Movie.count).must_equal count + 1 
+    end
+  end
 end
