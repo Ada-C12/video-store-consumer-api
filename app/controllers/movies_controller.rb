@@ -21,6 +21,18 @@ class MoviesController < ApplicationController
       )
   end
 
+  def create
+    @movie = Movie.new(movie_params)
+    if @movie.save
+      flash[:success] = "Movie added successfully"
+      # redirect_to root_path
+      return
+    else
+      flash.now[:failure] = "Movie failed to save"
+      return
+    end
+  end
+
   private
 
   def require_movie
