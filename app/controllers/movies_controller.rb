@@ -25,7 +25,10 @@ class MoviesController < ApplicationController
     movie = Movie.new(movie_params)
     movie.inventory = 1
     if movie.save
-      render status: :ok
+      render json: {
+        key: movie.id,
+        
+      }, status: :ok
       return
     else
       render json: {
