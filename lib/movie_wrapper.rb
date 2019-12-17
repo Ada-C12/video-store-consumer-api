@@ -1,12 +1,16 @@
+require 'dotenv'
+Dotenv.load 
+
 class MovieWrapper
   BASE_URL = "https://api.themoviedb.org/3/"
-  KEY = ENV["MOVIEDB_KEY"]
+  KEY = ENV['MOVIEDB_KEY']
 
   BASE_IMG_URL = "https://image.tmdb.org/t/p/"
   DEFAULT_IMG_SIZE = "w185"
   DEFAULT_IMG_URL = "http://lorempixel.com/185/278/"
 
   def self.search(query, retries_left=3)
+    puts "the key is" + KEY
     raise ArgumentError.new("Can't search without a MOVIEDB_KEY.  Please check your .env file!") unless KEY
 
     url = BASE_URL + "search/movie?api_key=" + KEY + "&query=" + query
