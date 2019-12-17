@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :require_movie, only: [:show]
+  before_action :require_movie, only: [:show, :create]
 
   def index
     if params[:query]
