@@ -12,13 +12,18 @@ class MoviesController < ApplicationController
   end
 
   def show
-    render(
-      status: :ok,
-      json: @movie.as_json(
-        only: [:title, :overview, :release_date, :inventory],
-        methods: [:available_inventory]
+    if 
+      render(
+        status: :ok,
+        json: @movie.as_json(
+          only: [:title, :overview, :release_date, :inventory],
+          methods: [:available_inventory]
+          )
         )
-      )
+      return
+    else
+      
+    end
   end
 
   private
