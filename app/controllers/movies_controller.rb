@@ -24,13 +24,16 @@ class MoviesController < ApplicationController
         )
     else
       external_movie = MovieWrapper.search(params[:title])
-      puts external_movie
-      render(
-        status: :ok,
-        json: external_movie.as_json(
-          only: [:title, :overview, :release_date]
+      if external_movie.empty? 
+        render status: :not_found, json: { errors: { title: ["No movie with title #{params["title"]}"] } }
+      else
+        render(
+          status: :ok,
+          json: external_movie.as_json(
+            only: [:title, :overview, :release_date]
+            )
           )
-        )
+      end
     end
   end
 

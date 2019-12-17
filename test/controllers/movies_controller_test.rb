@@ -66,7 +66,7 @@ class MoviesControllerTest < ActionDispatch::IntegrationTest
     end
 
     it "Returns an error when the movie doesn't exist" do
-      get movie_url(title: "does_not_exist")
+      get movie_url(title: "assfs")
       assert_response :not_found
 
       data = JSON.parse @response.body
