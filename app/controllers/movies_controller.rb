@@ -23,12 +23,17 @@ class MoviesController < ApplicationController
   
   def create
     init_order_count = 5
-    newMovie = Movie.new( title: params[:title], overview: params[:overview], release_date: params[:release_date], inventory: init_order_count, image_url: params[:image_url], external_id: params[:external_id])
-    if newMovie.save
-      puts "SUCCESSS!"
-    else  
-      puts "DAMMIT"
+    
+    if Movie.already_exist?(params[:external_id])
+      render json: { railsErrorMsg: "UH OH!!! MOVIE ALREADY EXISTS IN RENTAL LIBRARY." }, status: :bad_request
+      
+    else
+      newMovie = Movie.new( title: params[:title], overview: params[:overview], release_date: params[:release_date], inventory: init_order_count, image_url: params[:image_url], external_id: params[:external_id])
+      if !newMovie.save
+        puts "UNABLE TO SAVE NEW MOVIE B/C #{newMovie.error.full_messages}"
+      end
     end
+    
   end
   
   private
