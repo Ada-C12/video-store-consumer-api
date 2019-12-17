@@ -90,5 +90,18 @@ class MoviesControllerTest < ActionDispatch::IntegrationTest
       
       expect(Movie.count).must_equal count + 1 
     end
+
+    it 'cannot create an invalid movie' do
+      count = Movie.count
+      params = {
+        overview: "x", 
+        release_date: "12-12-19", 
+        inventory: 2, 
+        image_url: "something"
+      }
+      post movies_url(),params: params
+      
+      expect(Movie.count).must_equal count 
+    end
   end
 end
