@@ -21,6 +21,15 @@ class MoviesController < ApplicationController
       )
   end
 
+  def search 
+    if params[:query]
+      data = MovieWrapper.search(params[:query])
+      return data.length == 0 ? "No movies found matching that title" : data
+    end
+
+    render status: :ok, json: data
+  end
+
   private
 
   def require_movie
