@@ -22,9 +22,7 @@ class Movie < ApplicationRecord
     url = 'https://api.themoviedb.org/3/search/movie?'
     body = {token: ENV['MOVIEDB_KEY'], 
       query: query}
-    movie = []
     response = HTTParty.get(url, body: body)
-    movie << response
-    return movie[0]
+    movie = response[results][0]
   end
 end

@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :require_movie, only: [:show]
+  # before_action :require_movie, only: [:show]
 
   def index
     if params[:query]
@@ -12,7 +12,9 @@ class MoviesController < ApplicationController
   end
 
   def show
-    if 
+    @movie = Movie.find_by(title: params[:title])
+    puts @movie
+    if @movie
       render(
         status: :ok,
         json: @movie.as_json(
@@ -20,11 +22,18 @@ class MoviesController < ApplicationController
           methods: [:available_inventory]
           )
         )
-      return
     else
-      
+      external_movie = MovieWrapper.search(params[:title])
+      puts external_movie
+      render(
+        status: :ok,
+        json: external_movie.as_json(
+          only: [:title, :overview, :release_date]
+          )
+        )
     end
   end
+
 
   private
 
