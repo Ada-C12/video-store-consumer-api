@@ -13,3 +13,15 @@ BASE_URL + movie/550?api_key={MOVIEDB_KEY}
 ex: https://api.themoviedb.org/3/search/movie?api_key={MOVIEDB_KEY}&query=Jack+Reacher
 BASE_URL + search/movie?api_key={MOVIEDB_KEY}&query={name or something}
 
+
+# we store the movie in our db as... 
+  {
+    "id": 1,
+    "title": "Psycho",
+    "overview": "When larcenous real estate clerk Marion Crane goes on the lam with a wad of cash and hopes of starting a new life, she ends up at the notorious Bates Motel, where manager Norman Bates cares for his housebound mother. The place seems quirky, but fine… until Marion decides to take a shower.",
+    "release_date": "1960-06-16",
+    "image_url": "https://image.tmdb.org/t/p/w185/81d8oyEFgj7FlxJqSDXWr8JH8kV.jpg",
+    "external_id": 539
+  },
+# the attribs title, overview, release_date, and external_id are directly from themoviedb API.
+the image_url has the base of https://image.tmdb.org/t/p/w185/ added to their "poster_path"
