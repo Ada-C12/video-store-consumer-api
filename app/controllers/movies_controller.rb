@@ -1,6 +1,4 @@
 class MoviesController < ApplicationController
-  # before_action :require_movie, only: [:show]
-
   def index
     if params[:query]
       data = MovieWrapper.search(params[:query])
@@ -12,15 +10,25 @@ class MoviesController < ApplicationController
   end
 
   def show
-    @movie = Movie.find_by(title: params[:title])
-    puts @movie
-    if @movie
-      render(
-        status: :ok,
-        json: @movie.as_json(
-          only: [:title, :overview, :release_date, :inventory]
+    title = params[:title]
+    @movie = Movie.where("lower(title) LIKE ?", "%#{title.downcase}%").all
+    
+    if !@movie.empty?
+      if @movie.length > 1
+        render(
+          status: :ok,
+          json: @movie.as_json(
+            only: [:title, :overview, :release_date, :inventory]
+            )
           )
-        )
+      else
+        render(
+          status: :ok,
+          json: @movie[0].as_json(
+            only: [:title, :overview, :release_date, :inventory]
+            )
+          )
+      end
     else
       external_movie = MovieWrapper.search(params[:title])
       if external_movie.empty? 
