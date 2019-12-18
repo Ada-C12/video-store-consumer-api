@@ -1,6 +1,24 @@
 require 'test_helper'
 
 class MoviesControllerTest < ActionDispatch::IntegrationTest
+  describe "create" do
+    it "saves movie with valid parameters" do
+      params = {
+        title: "New Movie",
+        overview: "Some text",
+        release_date: "1960-06-16",
+        inventory: 8
+      }
+
+      start_count = Movie.count
+      post movies_path(params)
+      expect(Movie.count).must_equal start_count + 1
+      expect(Movie.last.title).must_equal params[:title]
+
+      must_respond_with :success
+    end
+  end
+
   describe "index" do
     it "returns a JSON array" do
       get movies_url
