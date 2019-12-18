@@ -1,0 +1,16 @@
+[
+  {
+    "movie_id": "98",
+    "customer_id": 1,
+    "returned": false,
+    "checkout_date": "2019-12-01",
+    "due_date": "2019-12-19"
+  }, 
+  {
+    "movie_id": "99",
+    "customer_id": 2,
+    "returned": false,
+    "checkout_date": "2019-11-01",
+    "due_date": "2019-12-19"
+  }
+]
