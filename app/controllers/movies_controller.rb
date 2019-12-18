@@ -27,7 +27,7 @@ class MoviesController < ApplicationController
       title: params["title"],
       overview: params["overview"],
       release_date: params["release_date"],
-      image_url: MovieWrapper.construct_image_url(params["poster_path"]),
+      image_url: params["image_url"],
       external_id: params["external_id"],
       inventory: params["inventory"]
     )
