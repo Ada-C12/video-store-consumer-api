@@ -29,7 +29,7 @@ class MoviesController < ApplicationController
       @movie = Movie.find_by(title: movie_params[:title])
       render(
         status: :ok,
-        json: @movie.as_json(only: [:title, :overview, :release_date, :id, :inventory])
+        json: @movie.as_json(only: [:title, :image_url, :overview, :release_date, :id, :inventory])
       )
     else
       render(
