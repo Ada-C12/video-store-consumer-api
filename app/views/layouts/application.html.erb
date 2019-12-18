@@ -9,6 +9,9 @@
   </head>
 
   <body>
+    <% m.errors.each do |attr, msg|  %>
+      <%= msg %>
+    <% end %>
     <%= yield %>
   </body>
 </html>
