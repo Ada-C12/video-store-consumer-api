@@ -22,13 +22,17 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = Movie.new(movie_params)
+    @movie = MovieWrapper.construct_movie
+    (params)
+# external id??
+    p params.id
+
     if @movie.save
-      flash[:success] = "Movie added successfully"
+      render json: @movie, status: :ok
       # redirect_to root_path
       return
     else
-      flash.now[:failure] = "Movie failed to save"
+      render json: { errors: { title: ["Failed to save to rental library"] } }, status: :bad_request
       return
     end
   end
