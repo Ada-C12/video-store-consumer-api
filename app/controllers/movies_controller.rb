@@ -19,7 +19,6 @@ class MoviesController < ApplicationController
         status: :ok,
         json: @movie.as_json(
           only: [:title, :overview, :release_date, :inventory],
-          methods: [:available_inventory]
           )
         )
     else
@@ -38,13 +37,14 @@ class MoviesController < ApplicationController
   end
 
   def create 
-    @movie = Movie.new(movie_params) 
-    if @movie.save
+    @movie = Movie.new(movie_params)
+    @movie.inventory = 1
+    movie = Movie.find_by(title: params[:title]) 
+    if movie == nil && @movie.save
       render(
         status: :ok,
         json: @movie.as_json(
-          only: [:title, :overview, :release_date, :inventory],
-          methods: [:available_inventory]
+          only: [:title, :overview, :release_date]
           )
         )
     else 
