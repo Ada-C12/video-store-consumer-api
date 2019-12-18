@@ -45,17 +45,19 @@ class RentalsController < ApplicationController
   end
   
   def index
-    allRentals = Rental.all.map do |rental|
-      {
-        title: rental.movie.title,
-        customer_id: rental.customer_id,
-        name: rental.customer.name,
-        postal_code: rental.customer.postal_code,
-        checkout_date: rental.checkout_date,
-        due_date: rental.due_date
-      }
+    allRentals = []
+    Rental.all.select do |rental|
+      if !rental.returned
+        allRentals << {
+          title: rental.movie.title,
+          customer_id: rental.customer_id,
+          name: rental.customer.name,
+          postal_code: rental.customer.postal_code,
+          checkout_date: rental.checkout_date,
+          due_date: rental.due_date
+        }
+      end
     end
-    
     render status: :ok, json: allRentals
   end
   
