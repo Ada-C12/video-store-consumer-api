@@ -65,7 +65,12 @@ class RentalsController < ApplicationController
           due_date: rental.due_date
       }
     end
-    render status: :ok, json: rentals
+
+    if rentals.empty?
+      render status: :bad_request, json: { errors: "no overdue rentals"}
+    else
+      render status: :ok, json: rentals
+    end
   end
 
 private
