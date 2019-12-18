@@ -4,12 +4,14 @@ class RentalsController < ApplicationController
 
   # TODO: make sure that wave 2 works all the way
   def index
-    rentals = Rental.where(returned: false)
- 
-    render json: rentals.as_json(
-      only: [:title, :name, :due_date  ],
-      methods: [:movie , :customer]
-    )
+    rentals = Rental.where(returned: false).map do |rental|
+      {
+          title: rental.movie.title,
+          name: rental.customer.name,
+          due_date: rental.due_date
+      }
+    end
+    render status: :ok, json: rentals
   end
 
   
