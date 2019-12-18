@@ -6,6 +6,8 @@ class RentalsController < ApplicationController
   def check_out
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
     
+    # make sure customer actually gets $1 deducted!!  weird bug with customer getting kicked off list...
+    
     if rental.save
       render status: :ok, json: {}
     else
