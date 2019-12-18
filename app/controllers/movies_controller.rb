@@ -16,10 +16,10 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = Movie.find_by(title: params[:title])
+    # @movie = Movie.find_by(title: params[:title])
 
-    @movie_params = request.body.read
-    puts @movie_params
+    # @movie_params = request.body.read
+    # puts @movie_params
     @movie = Movie.new
     @movie.title = params[:title]
     @movie.overview = params[:overview]
