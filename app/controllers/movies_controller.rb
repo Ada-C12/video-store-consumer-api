@@ -35,18 +35,23 @@ class MoviesController < ApplicationController
         render status: :not_found, json: { errors: { title: ["No movie with title #{params["title"]}"] } }
       else
         if external_movie.length > 1
+          # render(
+          #   status: :ok,
+          #   json: external_movie.as_json(
+          #     only: [:title, :overview, :release_date]
+          #     )
+          #   )
+          json = external_movie.as_json(only: [:title, :overview, :release_date])
           render(
             status: :ok,
-            json: external_movie.as_json(
-              only: [:title, :overview, :release_date]
-              )
-            )
-            return
+            json: { movie: json, not_in_database: 'true' }
+          )
+          return
         else
           json = external_movie[0].as_json(only: [:title, :overview, :release_date])
           render(
             status: :ok,
-            json: { movie: json, in_database: { in_database: false } }
+            json: { movie: json, not_in_database: 'true' }
           )
           return
         end
