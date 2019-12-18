@@ -17,8 +17,8 @@ class MoviesController < ApplicationController
       json: @movie.as_json(
         only: [:title, :overview, :release_date, :inventory],
         methods: [:available_inventory]
-        )
       )
+    )
   end
 
   def create(params)
@@ -32,7 +32,6 @@ class MoviesController < ApplicationController
       inventory: params["inventory"]
     )
     puts @movie
-  end
 
     if @movie.save
       render json: @movie, status: :ok
@@ -43,6 +42,7 @@ class MoviesController < ApplicationController
       return
     end
   end
+
 
   private
 
