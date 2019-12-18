@@ -21,7 +21,7 @@ class MoviesController < ApplicationController
     )
   end
 
-  def create(params)
+  def create
     p params["id"]
     @movie = Movie.new(
       title: params["title"],
