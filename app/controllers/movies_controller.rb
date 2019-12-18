@@ -30,7 +30,6 @@ class MoviesController < ApplicationController
       external_id: params["external_id"],
       inventory: params["inventory"]
     )
-
     if @movie.save
       render json: @movie, status: :ok
       return
@@ -40,13 +39,32 @@ class MoviesController < ApplicationController
     end
   end
 
+  def update
+    @movie = Movie.find_by(:titlex)
+    render(
+      status: :ok,
+      json: @movie.as_json(
+        only: [:title, :overview, :release_date, :inventory],
+        methods: [:available_inventory]
+      )
+    )
+  end
 
-  private
+  render(
+    status: :ok,
+    json: @movie.as_json(
+      only: [:title, :overview, :release_date, :inventory],
+      methods: [:available_inventory]
+    )
+  )
+end
 
-  def require_movie
-    @movie = Movie.find_by(title: params[:title])
-    unless @movie
-      render status: :not_found, json: { errors: { title: ["No movie with title #{params["title"]}"] } }
-    end
+
+private
+
+def require_movie
+  @movie = Movie.find_by(title: params[:title])
+  unless @movie
+    render status: :not_found, json: { errors: { title: ["No movie with title #{params["title"]}"] } }
   end
 end
