@@ -1,4 +1,5 @@
 class Movie < ApplicationRecord
+  validates :external_id, presence: true,uniqueness: { message: "This movie already exists in your library!" }
   has_many :rentals
   has_many :customers, through: :rentals
 
