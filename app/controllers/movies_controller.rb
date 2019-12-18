@@ -22,7 +22,6 @@ class MoviesController < ApplicationController
   end
 
   def create
-    p params["id"]
     @movie = Movie.new(
       title: params["title"],
       overview: params["overview"],
@@ -31,11 +30,9 @@ class MoviesController < ApplicationController
       external_id: params["external_id"],
       inventory: params["inventory"]
     )
-    puts @movie
 
     if @movie.save
       render json: @movie, status: :ok
-      # redirect_to root_path
       return
     else
       render json: { errors: { title: ["Failed to save to rental library"] } }, status: :bad_request
