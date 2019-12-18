@@ -22,7 +22,7 @@ class MoviesController < ApplicationController
   end
 
   def create
-    new_movie = Movie.new(params)
+    new_movie = Movie.new(movie_params)
     
     if new_movie.save
       render json: new_movie.as_json(only: [:id]), status: :created 
@@ -41,4 +41,8 @@ class MoviesController < ApplicationController
       render status: :not_found, json: { errors: { title: ["No movie with title #{params["title"]}"] } }
     end
   end
+
+  def movie_params
+    params.permit(:title, :release_date, :overview, :inventory)
+  end 
 end
