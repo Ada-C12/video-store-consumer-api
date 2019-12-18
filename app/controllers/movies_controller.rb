@@ -21,11 +21,18 @@ class MoviesController < ApplicationController
       )
   end
 
-  def create
-    @movie = MovieWrapper.construct_movie
-    (params)
-# external id??
-    p params.id
+  def create(params)
+    p params["id"]
+    @movie = Movie.new(
+      title: params["title"],
+      overview: params["overview"],
+      release_date: params["release_date"],
+      image_url: MovieWrapper.construct_image_url(params["poster_path"]),
+      external_id: params["id"],
+      inventory: params["inventory"]
+    )
+    puts @movie
+  end
 
     if @movie.save
       render json: @movie, status: :ok
