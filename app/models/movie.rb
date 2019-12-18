@@ -1,4 +1,6 @@
 class Movie < ApplicationRecord
+  validates :title, uniqueness: true, presence: true
+
   has_many :rentals
   has_many :customers, through: :rentals
 
@@ -15,5 +17,10 @@ class Movie < ApplicationRecord
     else
       MovieWrapper.construct_image_url(raw_value)
     end
+  end
+
+  def initialize(params)
+    super(params)
+    self.inventory = 1
   end
 end
