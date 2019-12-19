@@ -25,17 +25,12 @@ class MoviesController < ApplicationController
   def create
     movie = Movie.new(movie_params)
     
-    if movie.save
-      @movie = Movie.find_by(title: movie_params[:title])
-      render(
-        status: :ok,
-        json: @movie.as_json(only: [:title, :image_url, :overview, :release_date, :id, :inventory])
-      )
-    else
-      render(
-        status: :ok,
-      )
-    end
+    movie.save!
+    @movie = Movie.find_by(title: movie_params[:title])
+    render(
+      status: :ok,
+      json: @movie.as_json(only: [:title, :image_url, :overview, :release_date, :id, :inventory])
+    )
   end
 
   private

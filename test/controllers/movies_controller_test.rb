@@ -95,12 +95,9 @@ class MoviesControllerTest < ActionDispatch::IntegrationTest
       data["release_date"].must_equal("1989-01-22")      
     end
 
-    # it "Should Return JSON with " do
-    #   post movies_path(params: 
-    #     {movie: {
-    #       }
-    #     })
-    #   assert_response :success
-    # end
+    it "Should not create a Movie when not passed parameters" do
+      movie_params = { title: nil, overview: "stinker", release_date: "today", image_url: "", external_id: 123}
+      expect { post movies_path, params: movie_params}.must_raise ActionController::ParameterMissing 
+    end
   end
 end
