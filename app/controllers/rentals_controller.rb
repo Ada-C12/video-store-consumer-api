@@ -10,8 +10,14 @@ class RentalsController < ApplicationController
       # If we successfully rent, get the movie and decrement its inventory
       movie = Movie.find_by(id: @movie.id)
 
-      movie.inventory -= 1
+      if (movie.inventory)
+        movie.inventory -= 1
+      else
+        movie.inventory = 0
+      end
+      puts "goodbye"
       movie.save
+      puts "hello"
       render status: :ok, json: {}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
