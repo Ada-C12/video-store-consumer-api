@@ -4,14 +4,6 @@ class RentalsController < ApplicationController
 
   # TODO: make sure that wave 2 works all the way
   def index
-    
-
-    # data = data.paginate(page: params[:p], per_page: params[:n])
-
-    # render json: data.as_json(
-    #   only: [:id, :customer_id, :movie_id, :checkout_date, :due_date, :returned],
-    # )
-
     data = Rental.all
     rentals = data.map do |rental|
       {
@@ -48,6 +40,7 @@ class RentalsController < ApplicationController
     end
     rental.returned = true
     if rental.save
+      rental.delete
       render status: :ok, json: {}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
