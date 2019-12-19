@@ -18,6 +18,10 @@ class Rental < ApplicationRecord
     self.where(returned: false).where("due_date < ?", Date.today)
   end
   
+  def self.rentals_by_customer(customer)
+    self.where(customer_id: customer).where(returned: false)
+  end
+  
   private
   def due_date_in_future
     return unless self.due_date
