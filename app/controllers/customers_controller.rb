@@ -18,6 +18,16 @@ class CustomersController < ApplicationController
     )
   end
 
+  def show 
+    customer = Customer.find_by(id: params[:id])
+    if customer
+      movie_data = customer.movies
+      render status: :ok, json: movie_data
+    else
+      render status: :not_found, json: { errors: { id: ["No customer with id #{params["id"]}"] } }
+    end
+  end
+
 private
   def parse_query_args
     errors = {}
