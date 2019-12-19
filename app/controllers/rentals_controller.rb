@@ -7,6 +7,13 @@ class RentalsController < ApplicationController
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
 
     if rental.save
+      # If we successfully rent, get the movie and decrement its inventory
+      movie = Movie.find_by(id: @movie.id)
+
+      movie.inventory = 0
+      puts "Inventory is now 0 for #{movie.title}"
+
+      movie.save
       render status: :ok, json: {}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
@@ -17,13 +24,21 @@ class RentalsController < ApplicationController
     rental = Rental.first_outstanding(@movie, @customer)
     unless rental
       return render status: :not_found, json: {
-        errors: {
-          rental: ["Customer #{@customer.id} does not have #{@movie.title} checked out"]
-        }
-      }
+                      errors: {
+                        rental: ["Customer #{@customer.id} does not have #{@movie.title} checked out"],
+                      },
+                    }
     end
     rental.returned = true
     if rental.save
+      # If we successfully check in the movie, increment the inventory of the movie
+      movie = Movie.find_by(id: @movie.id)
+
+      movie.inventory = 1
+
+      puts "Inventory is now 1 for #{movie.title}"
+
+      movie.save
       render status: :ok, json: {}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
@@ -33,18 +48,19 @@ class RentalsController < ApplicationController
   def overdue
     rentals = Rental.overdue.map do |rental|
       {
-          title: rental.movie.title,
-          customer_id: rental.customer_id,
-          name: rental.customer.name,
-          postal_code: rental.customer.postal_code,
-          checkout_date: rental.checkout_date,
-          due_date: rental.due_date
+        title: rental.movie.title,
+        customer_id: rental.customer_id,
+        name: rental.customer.name,
+        postal_code: rental.customer.postal_code,
+        checkout_date: rental.checkout_date,
+        due_date: rental.due_date,
       }
     end
     render status: :ok, json: rentals
   end
 
-private
+  private
+
   # TODO: make error payloads arrays
   def require_movie
     @movie = Movie.find_by title: params[:title]

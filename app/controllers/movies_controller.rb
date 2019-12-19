@@ -25,6 +25,7 @@ class MoviesController < ApplicationController
     @movie.overview = params[:overview]
     @movie.release_date = params[:release_date]
     @movie.image_url = params[:image_url]
+    @movie.inventory = 1
 
     save_success = @movie.save
 
