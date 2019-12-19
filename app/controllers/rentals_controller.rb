@@ -5,6 +5,14 @@ class RentalsController < ApplicationController
   # TODO: make sure that wave 2 works all the way
   def check_out
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
+    @customer.account_credit -= 1.00
+    @movie.inventory -= 1
+    @customer.save
+    @movie.save
+    
+    
+    # UPDATE: customer gets $1 deducted!!  weird bug with customer getting kicked off list...
+    # UPDATE: movie inventory -1
     
     if rental.save
       render status: :ok, json: {}
@@ -62,7 +70,7 @@ class RentalsController < ApplicationController
   end
   
   private
-  # TODO: make error payloads arrays
+  # TODO: make error payloads arrays  <- I don't htink this applies to us.. -Caroline
   def require_movie
     @movie = Movie.find_by title: params[:title]
     unless @movie

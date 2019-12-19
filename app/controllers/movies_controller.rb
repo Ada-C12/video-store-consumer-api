@@ -30,7 +30,8 @@ class MoviesController < ApplicationController
     else
       newMovie = Movie.new( title: params[:title], overview: params[:overview], release_date: params[:release_date], inventory: init_order_count, image_url: params[:image_url], external_id: params[:external_id])
       if !newMovie.save
-        puts "UNABLE TO SAVE NEW MOVIE B/C #{newMovie.error.full_messages}"
+        msg = "UNABLE TO SAVE NEW MOVIE B/C #{newMovie.error.full_messages}"
+        render json: { railsErrorMsg: msg }, status: :bad_request
       end
     end
     
