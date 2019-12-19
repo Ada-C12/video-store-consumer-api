@@ -4,14 +4,6 @@ class RentalsController < ApplicationController
 
   # TODO: make sure that wave 2 works all the way
   def index
-    
-
-    # data = data.paginate(page: params[:p], per_page: params[:n])
-
-    # render json: data.as_json(
-    #   only: [:id, :customer_id, :movie_id, :checkout_date, :due_date, :returned],
-    # )
-
     data = Rental.all
     rentals = data.map do |rental|
       {
