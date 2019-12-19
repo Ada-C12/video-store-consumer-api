@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :require_movie, only: [:show, :create]
+  before_action :require_movie, only: [:show]
 
   def index
     if params[:query]
@@ -44,7 +44,7 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.permit(:title, :overview, :release_date, :image_url)
+    params.permit(:title, :overview, :release_date, :image_url, :external_id)
   end
 
   def require_movie
