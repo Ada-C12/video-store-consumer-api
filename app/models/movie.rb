@@ -1,6 +1,7 @@
 class Movie < ApplicationRecord
   has_many :rentals
   has_many :customers, through: :rentals
+  validates :title, presence: true
 
   def available_inventory
     self.inventory - Rental.where(movie: self, returned: false).length
@@ -15,5 +16,14 @@ class Movie < ApplicationRecord
     else
       MovieWrapper.construct_image_url(raw_value)
     end
+  end
+
+
+  def find_movie(query)
+    url = 'https://api.themoviedb.org/3/search/movie?'
+    body = {token: ENV['MOVIEDB_KEY'], 
+      query: query}
+    response = HTTParty.get(url, body: body)
+    movie = response[results][0]
   end
 end
