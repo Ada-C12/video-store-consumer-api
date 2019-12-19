@@ -6,8 +6,8 @@ class RentalsController < ApplicationController
   def index
     rentals = Rental.where(returned: false).map do |rental|
       {
-          title: rental.movie.title,
-          name: rental.customer.name,
+          movie: rental.movie,
+          customer: rental.customer,
           due_date: rental.due_date
       }
     end
