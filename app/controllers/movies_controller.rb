@@ -21,6 +21,27 @@ class MoviesController < ApplicationController
       )
   end
 
+  def create
+    # if title is in db alerady, render json w/ error
+    # else
+    movie_in_db = Movie.find_by(title: params[:title])
+    if movie_in_db
+      data = "Movie is already in database"
+    else
+      new_movie = Movie.new(
+        title: params[:title],
+        overview: params[:overview],
+        release_date: params[:release_date],
+        # inventory: params[:inventory], # AAAAH
+        image_url: params[:image_url],
+        external_id: params[:external_id]
+      )
+      data = "Movie added!"
+    end
+    
+
+  end
+
   private
 
   def require_movie
