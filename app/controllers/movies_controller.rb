@@ -41,7 +41,7 @@ class MoviesController < ApplicationController
         inventory: params["inventory"]
       )
       if @movie.save
-        render json: @movie, status: :ok
+        render json: @movie.as_json, status: :ok
         return
       else
         render json: { errors: { title: ["Failed to save to rental library"] } }, status: :bad_request
