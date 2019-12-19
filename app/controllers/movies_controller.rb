@@ -49,27 +49,6 @@ class MoviesController < ApplicationController
       end
     end
 
-    # def update
-    # title = params[:title]
-    # @movie = Movie.find_by(title: title)
-    # if @movie.update(inventory: params[:inventory])
-    #   render(
-    #     status: :ok,
-    #     json: @movie.as_json(
-    #       only: [:title, :overview, :release_date, :inventory],
-    #       methods: [:available_inventory]
-    #     )
-    #   )
-    #   end
-    # end
-
-    # def require_movie
-    #   @movie = Movie.find_by title: params[:title]
-    #   unless @movie
-    #     render status: :not_found, json: { errors: { title: ["No movie with title #{params[:title]}"] } }
-    #   end
-    # end
-
     render(
       status: :ok,
       json: @movie.as_json(
@@ -78,7 +57,6 @@ class MoviesController < ApplicationController
       )
     )
   end
-
 
   private
 
