@@ -13,6 +13,25 @@ class RentalsController < ApplicationController
     end
   end
 
+  def index
+
+    rentals = Rental.all.map do |rental|
+
+      {
+        id: rental.id,
+        movie_title: rental.movie.title,
+        movie_id: rental.movie.id,
+        customer_name: rental.customer.name,
+        customer_id: rental.customer.id,
+        checkout_date: rental.checkout_date,
+        due_date: rental.due_date,
+        returned: rental.returned
+      }
+    end
+
+    render json: rentals
+  end
+
   def check_in
     rental = Rental.first_outstanding(@movie, @customer)
     unless rental
