@@ -27,6 +27,7 @@ class MoviesController < ApplicationController
     movie_in_db = Movie.find_by(title: params[:title])
     if movie_in_db
       data = "Movie is already in database"
+      render status: :ok, json: data
     else
       new_movie = Movie.new(
         title: params[:title],
@@ -36,9 +37,12 @@ class MoviesController < ApplicationController
         image_url: params[:image_url],
         external_id: params[:external_id]
       )
+      new_movie.save
       data = "Movie added!"
+      render status: :ok, json: data
     end
-    
+
+
 
   end
 
