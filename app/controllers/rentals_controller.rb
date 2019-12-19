@@ -10,9 +10,7 @@ class RentalsController < ApplicationController
       # If we successfully rent, get the movie and decrement its inventory
       movie = Movie.find_by(id: @movie.id)
 
-      movie.inventory = 0
-      puts "Inventory is now 0 for #{movie.title}"
-
+      movie.inventory -= 1
       movie.save
       render status: :ok, json: {}
     else
@@ -34,9 +32,7 @@ class RentalsController < ApplicationController
       # If we successfully check in the movie, increment the inventory of the movie
       movie = Movie.find_by(id: @movie.id)
 
-      movie.inventory = 1
-
-      puts "Inventory is now 1 for #{movie.title}"
+      movie.inventory += 1
 
       movie.save
       render status: :ok, json: {}

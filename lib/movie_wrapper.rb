@@ -6,20 +6,26 @@ class MovieWrapper
   DEFAULT_IMG_SIZE = "w185"
   DEFAULT_IMG_URL = "http://lorempixel.com/185/278/"
 
-  def self.search(query, retries_left=3)
+  def self.search(query, retries_left = 3)
     raise ArgumentError.new("Can't search without a MOVIEDB_KEY.  Please check your .env file!") unless KEY
 
     url = BASE_URL + "search/movie?api_key=" + KEY + "&query=" + query
 
-    response =  HTTParty.get(url)
+    response = HTTParty.get(url)
 
     if response.success?
       if response["total_results"] == 0
         return []
       else
         movies = response["results"].map do |result|
-          self.construct_movie(result)
+          # look in table to see if the movie already exists, if so add it to the results
+          movie = Movie.find_by(title: result["title"])
+          if (movie == nil)
+            self.construct_movie(result)
+          end
         end
+
+        movies.reject { |item| item.nil? || item == "" }
         return movies
       end
     elsif retries_left > 0
@@ -39,7 +45,8 @@ class MovieWrapper
       overview: api_result["overview"],
       release_date: api_result["release_date"],
       image_url: self.construct_image_url(api_result["poster_path"]),
-      external_id: api_result["id"]
+      external_id: api_result["id"],
+      inventory: api_result["inventory"],
     )
   end
 
