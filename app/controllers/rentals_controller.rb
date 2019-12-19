@@ -5,14 +5,12 @@ class RentalsController < ApplicationController
   # TODO: make sure that wave 2 works all the way
   def check_out
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
+    
     @customer.account_credit -= 1.00
+    @customer.save!
+    
     @movie.inventory -= 1
-    @customer.save
-    @movie.save
-    
-    
-    # UPDATE: customer gets $1 deducted!!  weird bug with customer getting kicked off list...
-    # UPDATE: movie inventory -1
+    @movie.save!
     
     if rental.save
       render status: :ok, json: {}
@@ -30,6 +28,10 @@ class RentalsController < ApplicationController
         }
       }
     end
+    
+    @movie.inventory += 1
+    @movie.save!
+    
     rental.returned = true
     if rental.save
       render status: :ok, json: {}
