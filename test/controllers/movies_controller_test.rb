@@ -77,27 +77,30 @@ class MoviesControllerTest < ActionDispatch::IntegrationTest
   end
 
   describe "create" do
-    it "Returns a JSON object" do
+    it "Returns a JSON object with expected data" do
       post movies_path(params: 
         {movie: {
-          "title": "",
-          "overview": "",
-          "release_date": "",
-          "inventory": ""}
+          "title": "a title",
+          "overview": "an overview",
+          "release_date": "1989-01-22"
+        }
         })
       assert_response :success
       @response.headers['Content-Type'].must_include 'json'
 
       data = JSON.parse @response.body
       data.must_be_kind_of Hash
+      data["title"].must_equal("a title")
+      data["overview"].must_equal("an overview")
+      data["release_date"].must_equal("1989-01-22")      
     end
 
-    # it "Returns a JSON object with errors if missing parameters" do
+    # it "Should Return JSON with " do
     #   post movies_path(params: 
     #     {movie: {
     #       }
     #     })
-    #   assert_response :errors
+    #   assert_response :success
     # end
   end
 end
