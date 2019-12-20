@@ -4,12 +4,9 @@ class MoviesController < ApplicationController
   def index
     if params[:query]
       data = MovieWrapper.search(params[:query])
-    elsif params[:sort]
-      data = Movie.all.order(@sort)
     else
-      data = Movie.all
+      data = Movie.all.order("title")
     end
-
     render status: :ok, json: data
   end
 
