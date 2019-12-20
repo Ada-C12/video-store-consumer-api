@@ -3,6 +3,20 @@ class RentalsController < ApplicationController
   before_action :require_customer, only: [:check_out, :check_in]
 
   # TODO: make sure that wave 2 works all the way
+  def index
+    rentals = Rental.where(returned: false).map do |rental|
+      {
+          movie: rental.movie,
+          customer: rental.customer,
+          due_date: rental.due_date
+      }
+    end
+    render status: :ok, json: rentals
+  end
+
+  
+  
+  
   def check_out
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
 
