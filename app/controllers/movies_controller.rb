@@ -4,6 +4,8 @@ class MoviesController < ApplicationController
   def index
     if params[:query]
       data = MovieWrapper.search(params[:query])
+    elsif params[:sort]
+      data = Movie.all.order(@sort)
     else
       data = Movie.all
     end
@@ -66,4 +68,17 @@ class MoviesController < ApplicationController
       render status: :not_found, json: { errors: { title: ["No movie with title #{params["title"]}"] } }
     end
   end
+
+  def parse_query_args
+    errors = {}
+    @sort = params[:sort]
+    if @sort and not SORT_FIELDS.include? @sort
+      errors[:sort] = ["Invalid sort field '#{@sort}'"]
+    end
+
+    unless errors.empty?
+      render status: :bad_request, json: { errors: errors }
+    end
+  end
+
 end
