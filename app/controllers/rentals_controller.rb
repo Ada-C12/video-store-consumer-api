@@ -3,11 +3,27 @@ class RentalsController < ApplicationController
   before_action :require_customer, only: [:check_out, :check_in]
 
   # TODO: make sure that wave 2 works all the way
+  def index
+    data = Rental.all
+    rentals = data.map do |rental|
+      {
+          id: rental.id,
+          title: rental.movie.title,
+          customer_id: rental.customer_id,
+          name: rental.customer.name,
+          postal_code: rental.customer.postal_code,
+          checkout_date: rental.checkout_date,
+          due_date: rental.due_date
+      }
+    end
+    render status: :ok, json: rentals
+  end
+
   def check_out
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
 
     if rental.save
-      render status: :ok, json: {}
+      render status: :ok, json: {rental: rental}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
     end
@@ -24,6 +40,7 @@ class RentalsController < ApplicationController
     end
     rental.returned = true
     if rental.save
+      rental.delete
       render status: :ok, json: {}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
@@ -41,7 +58,12 @@ class RentalsController < ApplicationController
           due_date: rental.due_date
       }
     end
-    render status: :ok, json: rentals
+
+    if rentals.empty?
+      render status: :bad_request, json: { errors: "no overdue rentals"}
+    else
+      render status: :ok, json: rentals
+    end
   end
 
 private
