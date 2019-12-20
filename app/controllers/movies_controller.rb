@@ -7,6 +7,10 @@ class MoviesController < ApplicationController
     else
       data = Movie.all
     end
+
+    if params[:p] || params[:n]
+      data = data.paginate(page: params[:p], per_page: params[:n])
+    end
     
     render status: :ok, json: data
   end
