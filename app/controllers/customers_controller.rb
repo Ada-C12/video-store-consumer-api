@@ -4,7 +4,7 @@ class CustomersController < ApplicationController
   before_action :parse_query_args
   
   def index
-    if @sort
+    if @sort    # if the @sort came thru via API queries
       data = Customer.all.order(@sort)
     else
       data = Customer.all 
@@ -13,7 +13,7 @@ class CustomersController < ApplicationController
     # I added the following line to preserve the id order
     data = data.sort_by { |customerObj| customerObj.id }  
     
-    # I'm turning off their pre-written pagination
+    # I'm turning off their pre-written pagination, otherwise it will break b/c it doesn't get along with data.sort_by above
     # data = data.paginate(page: params[:p], per_page: params[:n])
     
     

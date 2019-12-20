@@ -5,20 +5,27 @@ class RentalsController < ApplicationController
   # TODO: make sure that wave 2 works all the way
   def check_out
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
-    @customer.account_credit -= 1.00
-    @movie.inventory -= 1
-    @customer.save
-    @movie.save
     
     
-    # UPDATE: customer gets $1 deducted!!  weird bug with customer getting kicked off list...
-    # UPDATE: movie inventory -1
     
-    if rental.save
-      render status: :ok, json: {}
+    if @movie.inventory > 0
+      @movie.inventory -= 1
+      @movie.save!
+      
+      @customer.account_credit -= 1.00
+      @customer.save!
+      
+      if rental.save
+        return render status: :ok, json: {}
+      else
+        return render status: :bad_request, json: { railsErrorMsg: rental.errors.messages }
+      end
+      
     else
-      render status: :bad_request, json: { errors: rental.errors.messages }
+      return render status: :bad_request, json: { railsErrorMsg: "Movie is out of stock, sorry!"}
     end
+    
+    
   end
   
   def check_in
@@ -30,6 +37,10 @@ class RentalsController < ApplicationController
         }
       }
     end
+    
+    @movie.inventory += 1
+    @movie.save!
+    
     rental.returned = true
     if rental.save
       render status: :ok, json: {}
