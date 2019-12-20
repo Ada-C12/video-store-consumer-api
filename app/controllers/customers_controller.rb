@@ -21,8 +21,12 @@ class CustomersController < ApplicationController
   def show 
     customer = Customer.find_by(id: params[:id])
     if customer
-      movie_data = customer.movies
-      render status: :ok, json: movie_data
+      rental_data = customer.rentals.where(returned: false)
+
+      render status: :ok, json: rental_data.as_json(
+        only: [:returned, :due_date],
+        methods: [:movie]
+      )
     else
       render status: :not_found, json: { errors: { id: ["No customer with id #{params["id"]}"] } }
     end

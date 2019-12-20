@@ -38,7 +38,8 @@ class RentalsController < ApplicationController
           name: rental.customer.name,
           postal_code: rental.customer.postal_code,
           checkout_date: rental.checkout_date,
-          due_date: rental.due_date
+          due_date: rental.due_date,
+          movie: rental.movie
       }
     end
     render status: :ok, json: rentals
