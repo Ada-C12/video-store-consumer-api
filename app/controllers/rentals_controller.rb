@@ -40,6 +40,7 @@ class RentalsController < ApplicationController
     end
     rental.returned = true
     if rental.save
+      rental.delete
       render status: :ok, json: {}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
