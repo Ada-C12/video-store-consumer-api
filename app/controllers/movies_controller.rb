@@ -11,14 +11,35 @@ class MoviesController < ApplicationController
     render status: :ok, json: data
   end
 
+  def new
+    @movie = Movie.new
+  end
+
+  def create
+    # @movie = Movie.find_by(title: params[:title])
+
+    # @movie_params = request.body.read
+    # puts @movie_params
+    @movie = Movie.new
+    @movie.title = params[:title]
+    @movie.overview = params[:overview]
+    @movie.release_date = params[:release_date]
+    @movie.image_url = params[:image_url]
+    @movie.inventory = 1
+
+    save_success = @movie.save
+
+    puts save_success
+  end
+
   def show
     render(
       status: :ok,
       json: @movie.as_json(
         only: [:title, :overview, :release_date, :inventory],
-        methods: [:available_inventory]
-        )
-      )
+        methods: [:available_inventory],
+      ),
+    )
   end
 
   private

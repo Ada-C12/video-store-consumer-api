@@ -9,7 +9,6 @@ class Rental < ApplicationRecord
   after_initialize :set_checkout_date
   after_initialize :set_returned
 
-
   def self.first_outstanding(movie, customer)
     self.where(movie: movie, customer: customer, returned: false).order(:due_date).first
   end
@@ -18,7 +17,8 @@ class Rental < ApplicationRecord
     self.where(returned: false).where("due_date < ?", Date.today)
   end
 
-private
+  private
+
   def due_date_in_future
     return unless self.due_date
     unless due_date > Date.today
